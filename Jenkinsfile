@@ -8,7 +8,16 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                echo "Let's build the image"
+                script {
+                    try {
+                        echo "Let's build the image"
+                        exit 1
+                    }
+                    catch (all) {
+                        echo "Oops, something went wrong with this build.."
+                        currentBuild.result='FAILURE'
+                    }
+                }
             }
         }
         stage('Deploy Image') {
