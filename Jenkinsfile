@@ -1,27 +1,20 @@
 pipeline {
     agent any
-    environment {
-        MY_NAME = 'Jenkins the builder'
-    }
     stages{
-        stage('Hello Jenkins') {
+        stage('Run Test') {
             steps {
-                sh 'echo "My name is ${MY_NAME}, and this name is from my global environment variable"'
+                echo "Let's run a test"
             }
         }
-        stage('Nice to meet you') {
-            environment {
-                WHAT_I_LOVE = 'learning CI/CD with Jenkins pipeline'
-            }
+        stage('Build Image') {
             steps {
-                sh 'echo "I love ${WHAT_I_LOVE}!, and this is from stage environment variable!"'
+                echo "Let's build the image"
             }
         }
-    }
-    post {
-        always {
-            echo "See you soon again, ${MY_NAME}!"
+        stage('Deploy Image') {
+            steps {
+                echo "Let's deploy the image"
+            }
         }
     }
 }
-
