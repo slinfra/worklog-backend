@@ -7,12 +7,13 @@ pipeline {
     agent any
     stages{
         stage('Init Variables') {
+            script {
             steps {
                 fullSHA = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
                 shortSHA = fullSHA[0..8]
                 branch = env.BRANCH_NAME
                 commitMessage = sh(script: "git log -1 --format='*%s* by _%an_'", returnStdout: true)
-            }
+            }}
         }
         stage('Run Test') {
             steps {
