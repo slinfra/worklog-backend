@@ -5,15 +5,16 @@ def commitMessage
 
 pipeline {
     agent any
-    stages{
+    stages {
         stage('Init Variables') {
             steps {
-            script {
-                fullSHA = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-                shortSHA = fullSHA[0..8]
-                branch = env.BRANCH_NAME
-                commitMessage = sh(script: "git log -1 --format='*%s* by _%an_'", returnStdout: true)
-            }}
+                script {
+                    fullSHA = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+                    shortSHA = fullSHA[0..8]
+                    branch = env.BRANCH_NAME
+                    commitMessage = sh(script: "git log -1 --format='*%s* by _%an_'", returnStdout: true)
+                }
+            }
         }
         stage('Run Test') {
             steps {
@@ -25,6 +26,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 echo "Let's build the image for ${shortSHA} in ${branch}"
+                echo "The change commit message to build is '${commitMessage}'"
                 echo 'build successful and published image with the following tags:'
                 echo "Tags: ${shortSHA}, ${fullSHA}"
             }
