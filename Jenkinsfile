@@ -7,8 +7,8 @@ pipeline {
     agent any
     stages{
         stage('Init Variables') {
-            script {
             steps {
+            script {
                 fullSHA = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
                 shortSHA = fullSHA[0..8]
                 branch = env.BRANCH_NAME
