@@ -3,6 +3,12 @@ def shortSHA
 def branch
 def commitMessage
 
+def sendSlackMessage(statusMessage) {
+    echo "Your pipeline has been ${statusMessage}"
+    echo "Commit Message: ${commitMessage}"
+    echo "Tags: ${shortSHA}, ${fullSHA}"
+}
+
 pipeline {
     agent any
     stages {
@@ -44,21 +50,16 @@ pipeline {
         }
         success {
             echo 'Build Success, Notifying to slack..'
-            echo 'Your pipeline has been completed'
-            echo "Commit Message: ${commitMessage}"
-            echo "Tags: ${shortSHA}, ${fullSHA}"
+            sendSlackMessage('completed')
         }
         failure {
             echo 'Build Failed, Notifying to slack..'
-            echo 'Your pipeline has been failed'
-            echo "Commit Message: ${commitMessage}"
-            echo "Tags: ${shortSHA}, ${fullSHA}"
+            sendSlackMessage('failed')
         }
         aborted {
             echo 'Build Aborted, Notifying to slack..'
-            echo 'Your pipeline has been aborted'
-            echo "Commit Message: ${commitMessage}"
-            echo "Tags: ${shortSHA}, ${fullSHA}"
+            sendSlackMessage('aborted')
+
         }
     }
 }
