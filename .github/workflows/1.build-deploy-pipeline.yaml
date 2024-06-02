@@ -39,7 +39,7 @@ jobs:
           echo "let's run a test for ${{ steps.vars.outputs.short_sha }} in ${{ steps.vars.output.branch }}"
           echo "running test for ${{ steps.vars.outputs.full_sha }}"
           pip install poetry
-          poetry install
+          poetry install --no-root
           export TESTING=true
           poetry run coverage run --source ./src/worklog -m pytest --disable-warnings -v
           poetry run coverage report
@@ -52,8 +52,9 @@ jobs:
         run: |
           echo "Let's build the image for ${{ needs.init-and-test.outputs.full_sha }}"
           echo "The change commit message to build is '${{ needs.init-and-test.outputs.commit_message }}'"
-          docker build . sungminl/worklog-backend
-          docker push sungminl/worklog-backend
+          docker build . -t sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }}
+          docker tag sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }} sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }}
+          docker push sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }} sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }}
           echo "build successful and published image with the following tags:"
           echo "Tags: ${{ needs.init-and-test.outputs.short_sha }}, ${{ needs.init-and-test.outputs.full_sha }}"
   deploy:
