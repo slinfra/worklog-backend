@@ -59,10 +59,10 @@ jobs:
           echo "The change commit message to build is '${{ needs.init-and-test.outputs.commit_message }}'"
           echo ${{ env.DOCKERHUB_TOKEN }} | docker login --username ${{ env.DOCKERHUB_USERNAME }} --password-stdin
           docker build . \
-            -t ${{ DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.full_sha }} \
-            -t ${{ DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.short_sha }}
-          docker push ${{ DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.short_sha }}
-          docker push ${{ DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.full_sha }}
+            -t ${{ env.DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.full_sha }} \
+            -t ${{ env.DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.short_sha }}
+          docker push ${{ env.DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.short_sha }}
+          docker push ${{ env.DOCKER_REPOSITORY }}:${{ needs.init-and-test.outputs.full_sha }}
           echo "build successful and published image with the following tags:"
           echo "Tags: ${{ needs.init-and-test.outputs.short_sha }}, ${{ needs.init-and-test.outputs.full_sha }}"
   deploy:
