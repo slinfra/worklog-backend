@@ -55,7 +55,7 @@ jobs:
           docker build . \
             -t sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }} \
             -t sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }}
-          docker push sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }} \
+          docker push sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }}
           docker push sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }}
           echo "build successful and published image with the following tags:"
           echo "Tags: ${{ needs.init-and-test.outputs.short_sha }}, ${{ needs.init-and-test.outputs.full_sha }}"
