@@ -73,6 +73,7 @@ jobs:
         run: |
           echo "Let's deploy the image"
           echo "Deploying our image ${{ needs.init-and-test.outputs.full_sha }} to the cluster"
+          kubectl apply -f deploy_manifest/worklog-backend.yaml
 
   notify-success-result:
     if: ${{ success() }}
