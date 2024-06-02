@@ -15,6 +15,9 @@ jobs:
       commit_message: ${{ steps.vars.outputs.commit_message }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - id: vars
         name: init variables
         run: |
@@ -45,9 +48,6 @@ jobs:
     needs: [init-and-test]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
       - name: Build image
         run: |
           echo "Let's build the image for ${{ needs.init-and-test.outputs.full_sha }}"
