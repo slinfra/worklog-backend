@@ -52,9 +52,11 @@ jobs:
         run: |
           echo "Let's build the image for ${{ needs.init-and-test.outputs.full_sha }}"
           echo "The change commit message to build is '${{ needs.init-and-test.outputs.commit_message }}'"
-          docker build . -t sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }}
-          docker tag sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }} sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }}
-          docker push sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }} sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }}
+          docker build . \
+            -t sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }} \
+            -t sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }}
+          docker push sungminl/worklog-backend:${{ needs.init-and-test.outputs.short_sha }} \
+          docker push sungminl/worklog-backend:${{ needs.init-and-test.outputs.full_sha }}
           echo "build successful and published image with the following tags:"
           echo "Tags: ${{ needs.init-and-test.outputs.short_sha }}, ${{ needs.init-and-test.outputs.full_sha }}"
   deploy:
