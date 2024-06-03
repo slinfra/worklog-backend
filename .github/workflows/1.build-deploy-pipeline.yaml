@@ -75,7 +75,7 @@ jobs:
           echo "Let's deploy the image"
           echo "Deploying our image ${{ needs.init-and-test.outputs.full_sha }} to the cluster"
           mkdir -p ~/.kube
-          cat ${{ secrets.CP_K8S_CONTEXT }} > ~/.kube/config
+          echo ${{ secrets.CP_K8S_CONTEXT }} > ~/.kube/config
           kubectl apply -f deploy_manifest/worklog-backend.yaml
 
   notify-success-result:
