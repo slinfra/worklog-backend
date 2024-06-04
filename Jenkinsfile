@@ -31,10 +31,13 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                echo "Let's build the image for ${shortSHA} in ${branch}"
-                echo "The change commit message to build is '${commitMessage}'"
-                echo 'build successful and published image with the following tags:'
-                echo "Tags: ${shortSHA}, ${fullSHA}"
+                script {
+                  echo "Let's build the image for ${shortSHA} in ${branch}"
+                  echo "The change commit message to build is '${commitMessage}'"
+                  echo 'build successful and published image with the following tags:'
+                  echo "Tags: ${shortSHA}, ${fullSHA}"
+                  docker build . -t foo
+                }
             }
         }
         stage('Deploy Image') {
@@ -59,7 +62,6 @@ pipeline {
         aborted {
             echo 'Build Aborted, Notifying to slack..'
             sendSlackMessage('aborted', commitMessage, shortSHA, fullSHA)
-
         }
     }
 }
