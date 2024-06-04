@@ -36,6 +36,7 @@ pipeline {
                   echo "The change commit message to build is '${commitMessage}'"
                   echo 'build successful and published image with the following tags:'
                   echo "Tags: ${shortSHA}, ${fullSHA}"
+                  sh "apt update && apt install docker-ce -y"
                   sh "docker build . -t foo"
                 }
             }
