@@ -23,21 +23,26 @@ pipeline {
             }
         }
         stage('Run Test') {
+            agent {
+                docker {
+                    image 'python:3.12.3-slim-bookworm'
+                }
+            }
             steps {
-                echo "let's run a test for ${shortSHA} in ${branch}"
-                echo "running test for ${fullSHA}"
-                echo 'Test Passed!'
+                script {
+                    echo "let's run a test for ${shortSHA} in ${branch}"
+                    echo "running test for ${fullSHA}"
+                    sh 'pip install poetry'
+                    echo 'Test Passed!'
+                }
             }
         }
         stage('Build Image') {
             steps {
-                script {
-                  echo "Let's build the image for ${shortSHA} in ${branch}"
-                  echo "The change commit message to build is '${commitMessage}'"
-                  echo 'build successful and published image with the following tags:'
-                  echo "Tags: ${shortSHA}, ${fullSHA}"
-                  def build = docker.build("test")
-                }
+                echo "Let's build the image for ${shortSHA} in ${branch}"
+                echo "The change commit message to build is '${commitMessage}'"
+                echo 'build successful and published image with the following tags:'
+                echo "Tags: ${shortSHA}, ${fullSHA}"
             }
         }
         stage('Deploy Image') {
